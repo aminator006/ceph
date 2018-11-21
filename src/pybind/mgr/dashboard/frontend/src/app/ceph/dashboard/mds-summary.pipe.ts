@@ -1,4 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
+
 import * as _ from 'lodash';
 
 @Pipe({
@@ -10,6 +11,8 @@ export class MdsSummaryPipe implements PipeTransform {
       return '';
     }
 
+    let contentLine1 = '';
+    let contentLine2 = '';
     let standbys = 0;
     let active = 0;
     let standbyReplay = 0;
@@ -18,9 +21,10 @@ export class MdsSummaryPipe implements PipeTransform {
     });
 
     if (value.standbys && !value.filesystems) {
-      return standbys + ', no filesystems';
+      contentLine1 = `${standbys} up`;
+      contentLine2 = 'no filesystems';
     } else if (value.filesystems.length === 0) {
-      return 'no filesystems';
+      contentLine1 = 'no filesystems';
     } else {
       _.each(value.filesystems, (fs, i) => {
         _.each(fs.mdsmap.info, (mds, j) => {
@@ -32,7 +36,28 @@ export class MdsSummaryPipe implements PipeTransform {
         });
       });
 
-      return active + ' active, ' + (standbys + standbyReplay) + ' standby';
+      contentLine1 = `${active} active`;
+      contentLine2 = `${standbys + standbyReplay} standby`;
     }
+
+    const mgrSummary = [
+      {
+        content: contentLine1,
+        class: ''
+      }
+    ];
+
+    if (contentLine2) {
+      mgrSummary.push({
+        content: '',
+        class: 'card-text-line-break'
+      });
+      mgrSummary.push({
+        content: contentLine2,
+        class: ''
+      });
+    }
+
+    return mgrSummary;
   }
 }

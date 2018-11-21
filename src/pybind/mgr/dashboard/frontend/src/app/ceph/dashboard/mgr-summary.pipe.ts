@@ -1,4 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
+
 import * as _ from 'lodash';
 
 @Pipe({
@@ -10,13 +11,31 @@ export class MgrSummaryPipe implements PipeTransform {
       return '';
     }
 
-    let result = 'active: ';
-    result += _.isUndefined(value.active_name) ? 'n/a' : value.active_name;
-
-    if (value.standbys.length) {
-      result += ', ' + value.standbys.length + ' standbys';
+    let activeCount = 'n/a';
+    const titleText = _.isUndefined(value.active_name) ? '' : `active daemon: ${value.active_name}`;
+    if (titleText.length > 0) {
+      activeCount = '1';
     }
+    const standbyCount = value.standbys.length;
+    const mgrSummary = [
+      {
+        content: `${activeCount} active`,
+        class: 'mgr-active-name',
+        titleText: titleText
+      }
+    ];
 
-    return result;
+    mgrSummary.push({
+      content: '',
+      class: 'card-text-line-break',
+      titleText: ''
+    });
+    mgrSummary.push({
+      content: `${standbyCount} standby`,
+      class: '',
+      titleText: ''
+    });
+
+    return mgrSummary;
   }
 }
