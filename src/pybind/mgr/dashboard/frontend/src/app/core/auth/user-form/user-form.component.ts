@@ -59,11 +59,11 @@ export class UserFormComponent implements OnInit {
         }),
         name: new FormControl(''),
         password: new FormControl('', {
-          validators: []
+          validators: [Validators.required]
         }),
         confirmpassword: new FormControl('', {
           updateOn: 'blur',
-          validators: []
+          validators: [Validators.required]
         }),
         email: new FormControl('', {
           validators: [Validators.email]

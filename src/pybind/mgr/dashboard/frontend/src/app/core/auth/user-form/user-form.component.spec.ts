@@ -92,6 +92,15 @@ describe('UserFormComponent', () => {
       formHelper.expectValidChange('username', 'user1');
     });
 
+    it('should validate password required', () => {
+      formHelper.expectErrorChange('password', '', 'required');
+      formHelper.expectValidChange('password', 'pass1');
+    });
+
+    it('should validate password confirmation required', () => {
+      formHelper.expectErrorChange('confirmpassword', '', 'required');
+    });
+
     it('should validate password match', () => {
       formHelper.setValue('password', 'aaa');
       formHelper.expectErrorChange('confirmpassword', 'bbb', 'match');

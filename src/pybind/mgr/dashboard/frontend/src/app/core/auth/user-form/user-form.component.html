@@ -37,9 +37,11 @@
         <!-- Password -->
         <div class="form-group"
              [ngClass]="{'has-error': userForm.showError('password', formDir)}">
-          <label i18n
-                 class="control-label col-sm-3"
-                 for="name">Password</label>
+          <label class="control-label col-sm-3"
+                 for="name">
+            <ng-container i18n>Password</ng-container>
+            <span class="required"></span>
+          </label>
           <div class="col-sm-9">
             <div class="input-group">
               <input class="form-control"
@@ -64,9 +66,11 @@
         <!-- Confirm password -->
         <div class="form-group"
              [ngClass]="{'has-error': userForm.showError('confirmpassword', formDir)}">
-          <label i18n
-                 class="control-label col-sm-3"
-                 for="name">Confirm password</label>
+          <label class="control-label col-sm-3"
+                 for="name">
+            <ng-container i18n>Confirm password</ng-container>
+            <span class="required"></span>
+          </label>
           <div class="col-sm-9">
             <div class="input-group">
               <input class="form-control"
