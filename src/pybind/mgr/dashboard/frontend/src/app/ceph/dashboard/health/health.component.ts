@@ -128,4 +128,13 @@ export class HealthComponent implements OnInit, OnDestroy {
 
     return readOps + writeOps > 0;
   }
+
+  getObjectPercentage(value: number = 0) {
+    const divisor = this.healthData.pg_info.object_stats.num_object_copies || 0;
+    if (value == 0 || divisor == 0) {
+      return 0;
+    }
+
+    return ((value / divisor) * 100).toFixed(2);
+  }
 }

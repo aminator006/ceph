@@ -33,7 +33,7 @@
              #healthChecksTarget="bs-popover"
              placement="bottom"
              container="body"
-             containerClass="info-card-popover-cluster-status"
+             containerClass="info-card-popover-container info-card-popover-cluster-status"
              (click)="healthChecksTarget.toggle()">
           {{ healthData.health.status }}
         </div>
@@ -214,9 +214,29 @@
                     i18n-cardTitle
                     class="cd-col-5"
                     cardClass="card-medium"
-                    contentClass="content-medium content-highlight"
-                    *ngIf="healthData.df?.stats?.total_objects != null">
-        {{ healthData.df?.stats?.total_objects }}
+                    contentClass="content-medium content-highlight text-area-size-2"
+                    *ngIf="healthData.pg_info.object_stats.num_objects != null">
+        <ng-template #objectStats>
+          <ul>
+            <li><span class="bold" i18n>Copies</span>: {{ healthData.pg_info.object_stats.num_object_copies }}</li>
+            <li><span class="bold" i18n>Copies Degraded</span>: {{ healthData.pg_info.object_stats.num_objects_degraded }}
+              ({{ getObjectPercentage(healthData.pg_info.object_stats.num_objects_degraded) }}%)</li>
+            <li><span class="bold" i18n>Copies Misplaced</span>: {{ healthData.pg_info.object_stats.num_objects_misplaced }}
+              ({{ getObjectPercentage(healthData.pg_info.object_stats.num_objects_misplaced) }}%)</li>
+            <li><span class="bold" i18n>Copies Unfound</span>: {{ healthData.pg_info.object_stats.num_objects_unfound }}
+              ({{ getObjectPercentage(healthData.pg_info.object_stats.num_objects_unfound) }}%)</li>
+          </ul>
+        </ng-template>
+        <div class="info-card-content-clickable"
+             [popover]="objectStats"
+             #objectStatsTarget="bs-popover"
+             placement="top"
+             container="body"
+             containerClass="info-card-popover-container"
+             triggers="mouseenter:mouseleave"
+             (click)="objectStatsTarget.toggle()">
+          {{ healthData.pg_info.object_stats.num_objects }}
+        </div>
       </cd-info-card>
 
       <cd-info-card cardTitle="PGs per OSD"

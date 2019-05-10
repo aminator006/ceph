@@ -1,5 +1,11 @@
 @import '../../../../defaults';
 
+.info-card-popover-container {
+  .popover-body {
+    font-size: 12px;
+  }
+}
+
 .info-card-popover-cluster-status {
   max-width: 23vw;
   max-height: 20vh;
@@ -7,7 +13,6 @@
   .popover-body {
     max-width: 100%;
     max-height: 19vh;
-    font-size: 12px;
   }
 }
 
