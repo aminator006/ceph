@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { HealthService } from '../../../shared/api/health.service';
 import { Permissions } from '../../../shared/models/permissions';
+import { DimlessPipe } from '../../../shared/pipes/dimless.pipe';
 import { AuthStorageService } from '../../../shared/services/auth-storage.service';
 import {
   FeatureTogglesMap$,
@@ -32,7 +33,8 @@ export class HealthComponent implements OnInit, OnDestroy {
     private authStorageService: AuthStorageService,
     private pgCategoryService: PgCategoryService,
     private featureToggles: FeatureTogglesService,
-    private refreshIntervalService: RefreshIntervalService
+    private refreshIntervalService: RefreshIntervalService,
+    private dimless: DimlessPipe
   ) {
     this.permissions = this.authStorageService.getPermissions();
     this.enabledFeature$ = this.featureToggles.get();
@@ -58,10 +60,22 @@ export class HealthComponent implements OnInit, OnDestroy {
   prepareReadWriteRatio(chart) {
     const ratioLabels = [];
     const ratioData = [];
+    const total =
+      this.healthData.client_perf.write_op_per_sec + this.healthData.client_perf.read_op_per_sec;
 
-    ratioLabels.push(this.i18n('Writes'));
+    ratioLabels.push(
+      `${this.i18n('Writes')} (${this.calcPercentage(
+        this.healthData.client_perf.write_op_per_sec,
+        total
+      )}%)`
+    );
     ratioData.push(this.healthData.client_perf.write_op_per_sec);
-    ratioLabels.push(this.i18n('Reads'));
+    ratioLabels.push(
+      `${this.i18n('Reads')} (${this.calcPercentage(
+        this.healthData.client_perf.read_op_per_sec,
+        total
+      )}%)`
+    );
     ratioData.push(this.healthData.client_perf.read_op_per_sec);
 
     chart.dataset[0].data = ratioData;
@@ -69,14 +83,13 @@ export class HealthComponent implements OnInit, OnDestroy {
   }
 
   prepareRawUsage(chart, data) {
-    const percentAvailable = Math.round(
-      100 *
-        ((data.df.stats.total_bytes - data.df.stats.total_used_raw_bytes) /
-          data.df.stats.total_bytes)
+    const percentAvailable = this.calcPercentage(
+      data.df.stats.total_bytes - data.df.stats.total_used_raw_bytes,
+      data.df.stats.total_bytes
     );
-
-    const percentUsed = Math.round(
-      100 * (data.df.stats.total_used_raw_bytes / data.df.stats.total_bytes)
+    const percentUsed = this.calcPercentage(
+      data.df.stats.total_used_raw_bytes,
+      data.df.stats.total_bytes
     );
 
     chart.dataset[0].data = [data.df.stats.total_used_raw_bytes, data.df.stats.total_avail_bytes];
@@ -122,10 +135,67 @@ export class HealthComponent implements OnInit, OnDestroy {
       .map((categoryType) => categoryPgAmount[categoryType]);
   }
 
+  prepareObjects(chart, data) {
+    const totalCopies = data.pg_info.object_stats.num_object_copies;
+    const healthy =
+      totalCopies -
+      data.pg_info.object_stats.num_objects_misplaced -
+      data.pg_info.object_stats.num_objects_degraded -
+      data.pg_info.object_stats.num_objects_unfound;
+
+    chart.labels = [
+      `${this.i18n('Healthy')} (${this.calcPercentage(healthy, totalCopies)}%)`,
+      `${this.i18n('Misplaced')} (${this.calcPercentage(
+        data.pg_info.object_stats.num_objects_misplaced,
+        totalCopies
+      )}%)`,
+      `${this.i18n('Degraded')} (${this.calcPercentage(
+        data.pg_info.object_stats.num_objects_degraded,
+        totalCopies
+      )}%)`,
+      `${this.i18n('Unfound')} (${this.calcPercentage(
+        data.pg_info.object_stats.num_objects_unfound,
+        totalCopies
+      )}%)`
+    ];
+    chart.colors = [
+      {
+        backgroundColor: [
+          HealthPieColor.DEFAULT_GREEN,
+          HealthPieColor.DEFAULT_BLUE,
+          HealthPieColor.DEFAULT_ORANGE,
+          HealthPieColor.DEFAULT_RED
+        ]
+      }
+    ];
+    chart.dataset[0].data = [
+      healthy,
+      data.pg_info.object_stats.num_objects_misplaced,
+      data.pg_info.object_stats.num_objects_degraded,
+      data.pg_info.object_stats.num_objects_unfound
+    ];
+
+    chart.options.title = {
+      display: true,
+      text: `${this.dimless.transform(data.pg_info.object_stats.num_objects)} total`,
+      position: 'bottom'
+    };
+  }
+
   isClientReadWriteChartShowable() {
     const readOps = this.healthData.client_perf.read_op_per_sec || 0;
     const writeOps = this.healthData.client_perf.write_op_per_sec || 0;
 
     return readOps + writeOps > 0;
+  }
+
+  private calcPercentage(dividend: number, divisor: number) {
+    dividend = Number(dividend);
+    divisor = Number(divisor);
+    if (isNaN(dividend) || isNaN(divisor) || divisor === 0) {
+      return this.i18n('N/A');
+    }
+
+    return Math.round((dividend / divisor) * 100);
   }
 }

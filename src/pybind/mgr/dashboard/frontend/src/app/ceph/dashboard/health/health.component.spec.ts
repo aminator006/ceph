@@ -39,8 +39,8 @@ describe('HealthComponent', () => {
     client_perf: {},
     scrub_status: 'Inactive',
     pools: [],
-    df: { stats: { total_objects: 0 } },
-    pg_info: {}
+    df: { stats: {} },
+    pg_info: { object_stats: { num_objects: 0 } }
   };
   const fakeAuthStorageService = {
     getPermissions: () => {
@@ -248,6 +248,14 @@ describe('HealthComponent', () => {
     expect(preparePgStatus).toHaveBeenCalled();
   });
 
+  it('event binding "prepareObjects" is called', () => {
+    const prepareObjects = spyOn(component, 'prepareObjects');
+
+    fixture.detectChanges();
+
+    expect(prepareObjects).toHaveBeenCalled();
+  });
+
   describe('preparePgStatus', () => {
     const expectedChart = (data: number[]) => ({
       colors: [
@@ -313,6 +321,19 @@ describe('HealthComponent', () => {
       component.healthData['client_perf'] = { read_op_per_sec: 2, write_op_per_sec: 3 };
 
       expect(component.isClientReadWriteChartShowable()).toBeTruthy();
+    });
+  });
+
+  describe('calcPercentage', () => {
+    it('returns correct value', () => {
+      expect(component['calcPercentage'](1, undefined)).toEqual('N/A');
+      expect(component['calcPercentage'](1, null)).toEqual('N/A');
+      expect(component['calcPercentage'](1, 0)).toEqual('N/A');
+      expect(component['calcPercentage'](undefined, 1)).toEqual('N/A');
+      expect(component['calcPercentage'](null, 1)).toEqual(0);
+      expect(component['calcPercentage'](0, 1)).toEqual(0);
+      expect(component['calcPercentage'](2.3, 10)).toEqual(23);
+      expect(component['calcPercentage'](2.35, 10)).toEqual(24);
     });
   });
 });

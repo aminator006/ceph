@@ -14,6 +14,7 @@ import * as _ from 'lodash';
 
 import { ChartTooltip } from '../../../shared/models/chart-tooltip';
 import { DimlessBinaryPipe } from '../../../shared/pipes/dimless-binary.pipe';
+import { DimlessPipe } from '../../../shared/pipes/dimless.pipe';
 import { HealthPieColor } from './health-pie-color.enum';
 
 @Component({
@@ -65,7 +66,7 @@ export class HealthPieComponent implements OnChanges, OnInit {
   };
   private hiddenSlices = [];
 
-  constructor(private dimlessBinary: DimlessBinaryPipe) {}
+  constructor(private dimlessBinary: DimlessBinaryPipe, private dimless: DimlessPipe) {}
 
   ngOnInit() {
     // An extension to Chart.js to enable rendering some
@@ -147,9 +148,9 @@ export class HealthPieComponent implements OnChanges, OnInit {
   private getChartTooltipBody(body) {
     const bodySplit = body[0].split(': ');
 
-    if (this.isBytesData) {
-      bodySplit[1] = this.dimlessBinary.transform(bodySplit[1]);
-    }
+    bodySplit[1] = this.isBytesData
+      ? this.dimlessBinary.transform(bodySplit[1])
+      : this.dimless.transform(bodySplit[1]);
 
     return bodySplit.join(': ');
   }

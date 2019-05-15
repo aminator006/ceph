@@ -100,7 +100,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/ceph/dashboard/health/health.component.html</context>
-          <context context-type="linenumber">190</context>
+          <context context-type="linenumber">189</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/ceph/cephfs/cephfs-detail/cephfs-detail.component.html</context>
@@ -2234,13 +2234,13 @@
         <source>Raw Capacity</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/ceph/dashboard/health/health.component.html</context>
-          <context context-type="linenumber">200</context>
+          <context context-type="linenumber">199</context>
         </context-group>
       </trans-unit><trans-unit id="afdb601c16162f2c798b16a2920955f1cc6a20aa" datatype="html">
         <source>Objects</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/ceph/dashboard/health/health.component.html</context>
-          <context context-type="linenumber">213</context>
+          <context context-type="linenumber">212</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/ceph/block/rbd-details/rbd-details.component.html</context>
@@ -2250,13 +2250,13 @@
         <source>PGs per OSD</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/ceph/dashboard/health/health.component.html</context>
-          <context context-type="linenumber">222</context>
+          <context context-type="linenumber">225</context>
         </context-group>
       </trans-unit><trans-unit id="498a109c6e9e94f1966de01aa0326f7f0ac6fb52" datatype="html">
         <source>PG Status</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/ceph/dashboard/health/health.component.html</context>
-          <context context-type="linenumber">231</context>
+          <context context-type="linenumber">234</context>
         </context-group>
       </trans-unit><trans-unit id="ce9dfdc6dccb28dc75a78c704e09dc18fb02dcfa" datatype="html">
         <source>Capacity</source>
@@ -2268,7 +2268,7 @@
         <source><x id="START_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;i&gt;"/><x id="CLOSE_ITALIC_TEXT" ctype="x-i" equiv-text="&lt;/i&gt;"/> See <x id="START_LINK" ctype="x-a" equiv-text="&lt;a&gt;"/>Logs<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/> for more details.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/ceph/dashboard/health/health.component.html</context>
-          <context context-type="linenumber">265</context>
+          <context context-type="linenumber">268</context>
         </context-group>
       </trans-unit><trans-unit id="0c1e17956453ad772dbe82d6946f62748c692f3e" datatype="html">
         <source>Ranks</source>
@@ -5332,6 +5332,34 @@
       </trans-unit>
       <trans-unit id="e5d8bb389c702588877f039d72178f219453a72d" datatype="html">
         <source>Unknown</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/ceph/dashboard/health/health.component.ts</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="88155be1b9b9c6140d6e8f93bac4a775cfdc6671" datatype="html">
+        <source>Healthy</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/ceph/dashboard/health/health.component.ts</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8a3aec4dc1a6e2d4c612ae85e0537acbb20a0f85" datatype="html">
+        <source>Misplaced</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/ceph/dashboard/health/health.component.ts</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ee81f9bf7ceac69712e0b83e8adc268739f9673e" datatype="html">
+        <source>Degraded</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/ceph/dashboard/health/health.component.ts</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="14625bc4025daef1969777a67a3cca27e0cd9167" datatype="html">
+        <source>Unfound</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/ceph/dashboard/health/health.component.ts</context>
           <context context-type="linenumber">1</context>

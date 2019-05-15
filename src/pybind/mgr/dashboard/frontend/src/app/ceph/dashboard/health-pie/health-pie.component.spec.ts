@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { configureTestBed } from '../../../../testing/unit-test-helper';
 import { DimlessBinaryPipe } from '../../../shared/pipes/dimless-binary.pipe';
+import { DimlessPipe } from '../../../shared/pipes/dimless.pipe';
 import { FormatterService } from '../../../shared/services/formatter.service';
 import { HealthPieComponent } from './health-pie.component';
 
@@ -13,7 +14,7 @@ describe('HealthPieComponent', () => {
   configureTestBed({
     schemas: [NO_ERRORS_SCHEMA],
     declarations: [HealthPieComponent],
-    providers: [DimlessBinaryPipe, FormatterService]
+    providers: [DimlessBinaryPipe, DimlessPipe, FormatterService]
   });
 
   beforeEach(() => {
@@ -80,5 +81,15 @@ describe('HealthPieComponent', () => {
     component.ngOnChanges();
 
     expect(component.chartConfig.dataset[0].data).toEqual(initialData);
+  });
+
+  it('should transform tooltip body amount to selected units', () => {
+    const tooltipBody = ['text: 10000'];
+
+    component.isBytesData = false;
+    expect(component['getChartTooltipBody'](tooltipBody)).toEqual('text: 10 k');
+
+    component.isBytesData = true;
+    expect(component['getChartTooltipBody'](tooltipBody)).toEqual('text: 9.8 KiB');
   });
 });
