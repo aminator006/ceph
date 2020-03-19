@@ -47,7 +47,7 @@ The list of Debian or RPM packages dependencies can be installed with:
 
 Note that these instructions are meant for developers who are
 compiling the code for development and testing.  To build binaries
-suitable for installation we recommend you build deb or rpm packages,
+suitable for installation we recommend you to build deb or rpm packages,
 or refer to the `ceph.spec.in` or `debian/rules` to see which
 configuration options are specified for production builds.
 
@@ -64,7 +64,7 @@ be up to 5x slower with some workloads. Please pass
 "-DCMAKE_BUILD_TYPE=RelWithDebInfo" to do_cmake.sh to create a non-debug 
 release.)
 
-This assumes you make your build dir a subdirectory of the ceph.git
+This assumes you to make your build dir a subdirectory of the ceph.git
 checkout. If you put it elsewhere, just replace `..` in do_cmake.sh with a
 correct path to the checkout. Any additional CMake args can be specified
 setting ARGS before invoking do_cmake. See [cmake options](#cmake-options) 
